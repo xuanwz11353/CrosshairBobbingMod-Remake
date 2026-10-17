@@ -435,35 +435,41 @@
     "2026-10-17": {
       "curseforge": 4,
       "github": 0,
-      "modrinth": 10,
-      "views": 0
+      "modrinth": 192,
+      "views": 27
+    },
+    "2026-10-18": {
+      "curseforge": 13,
+      "github": 0,
+      "modrinth": 8,
+      "views": 1
     }
   },
   "totals": {
-    "modrinth": 2220,
-    "curseforge": 168,
+    "modrinth": 2410,
+    "curseforge": 181,
     "github": 8,
-    "views": 325
+    "views": 353
   },
   "snapshots": {
     "curseforge": {
-      "date": "2026-10-17",
-      "total": 168
+      "date": "2026-10-18",
+      "total": 181
     },
     "github": {
-      "date": "2026-10-17",
+      "date": "2026-10-18",
       "total": 8
     }
   },
-  "updated": "2026-10-16T19:28:01.781Z",
+  "updated": "2026-10-17T18:19:26.754Z",
   "sources": {
     "curseforge": "cfwidget"
   },
   "breakdown": {
     "loaders": {
-      "fabric": 21,
-      "neoforge": 1801,
-      "unknown": 410
+      "fabric": 23,
+      "neoforge": 1913,
+      "unknown": 486
     },
     "versions": [
       {
@@ -472,7 +478,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 2129
+        "downloads": 2279
       },
       {
         "name": "Fabric-1.9fix",
@@ -480,7 +486,15 @@
         "loaders": [
           "fabric"
         ],
-        "downloads": 42
+        "downloads": 48
+      },
+      {
+        "name": "Neoforge-1.9.1",
+        "platform": "modrinth",
+        "loaders": [
+          "neoforge"
+        ],
+        "downloads": 30
       },
       {
         "name": "fabric-1.9",
@@ -488,7 +502,7 @@
         "loaders": [
           "fabric"
         ],
-        "downloads": 28
+        "downloads": 30
       },
       {
         "name": "neoforge-1.9",
@@ -496,7 +510,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 25
+        "downloads": 27
       },
       {
         "name": "1.9fix-fabric",
@@ -507,6 +521,11 @@
         "name": "1.9fix-neoforge",
         "platform": "github",
         "downloads": 2
+      },
+      {
+        "name": "1.9.1-neoforge",
+        "platform": "github",
+        "downloads": 0
       }
     ]
   }
