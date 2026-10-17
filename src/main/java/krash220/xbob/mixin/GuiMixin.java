@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import krash220.xbob.MainMod;
+import krash220.xbob.game.api.Debug;
 import krash220.xbob.game.api.DynamicCrosshairCompat;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -34,6 +35,9 @@ public class GuiMixin {
         PoseStack pose = graphics.pose();
         boolean handle = DynamicCrosshairCompat.shouldHandleCrosshair();
 
+        Debug.count(handle ? "gui.indicator.bobbed" : "gui.indicator.plain");
+        Debug.throttled("gui.indicator.blit", "crosshair attack indicator blitSprite {}: handle={} texture={} at ({}, {}) size {}x{}", handle ? "BOBBED" : "PLAIN", handle, texture, x, y, width, height);
+
         if (handle) {
             MainMod.preDynamicCrosshair(pose);
         }
@@ -48,6 +52,9 @@ public class GuiMixin {
     private void xbob$draw9(GuiGraphics graphics, ResourceLocation texture, int u0, int v0, int u1, int v1, int x, int y, int width, int height) {
         PoseStack pose = graphics.pose();
         boolean handle = DynamicCrosshairCompat.shouldHandleCrosshair();
+
+        Debug.count(handle ? "gui.indicator9.bobbed" : "gui.indicator9.plain");
+        Debug.throttled("gui.indicator.blit9", "crosshair attack indicator blitSprite(9-arg) {}: handle={} texture={} at ({}, {}) size {}x{}", handle ? "BOBBED" : "PLAIN", handle, texture, x, y, width, height);
 
         if (handle) {
             MainMod.preDynamicCrosshair(pose);

@@ -8,6 +8,8 @@
     "xbob.config.xbow": "Crossbow Animation",
     "xbob.config.eat": "Eating Animation",
     "xbob.config.atk": "Attacking Animation",
+    "xbob.config.shouldersurfingCrosshair": "ShoulderSurfing Crosshair Bobbing",
+    "xbob.config.dynamicCrosshairLayerPose": "DynamicCrosshair: Layer Transform (recommended)",
     "xbob.config.value.enable": "Enabled",
     "xbob.config.value.disable": "Disabled"
 }

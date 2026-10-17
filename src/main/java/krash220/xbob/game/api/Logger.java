@@ -9,4 +9,12 @@ public class Logger {
     public static void info(String log, Object... args) {
         LOGGER.info(log, args);
     }
+
+    public static void warn(String log, Object... args) {
+        LOGGER.warn(log, args);
+    }
+
+    public static void error(String log, Throwable throwable) {
+        LOGGER.error(log, throwable);
+    }
 }

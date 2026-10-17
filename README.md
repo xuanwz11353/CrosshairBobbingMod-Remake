@@ -18,6 +18,18 @@ A: 功能完全相同，仅适配新版 Minecraft。
 **Q: 发现 Bug 如何反馈？**  
 A: 请在issues页面提交，并说明你的 Minecraft 版本、模组加载器版本以及复现步骤。
 
+## 📝 重铸信息（修改记录）
+
+本重铸版相对上游原模组 [Krash220/CrosshairBobbingMod](https://github.com/Krash220/CrosshairBobbingMod) 的修改：
+
+| 日期 | 版本 | 修改内容 |
+| --- | --- | --- |
+| 2026-08-15 | 1.9 | 适配 Minecraft 1.21.1 与 NeoForge 21.1.x |
+| 2026-09-25 | 1.9fix | 新增 DynamicCrosshair 兼容（准星与攻击指示器一起摇晃） |
+| 2026-10-17 | 1.9.1 | 修复整合包中动态准星准星不摇晃的问题（改用整层变换）；新增越肩视角（ShoulderSurfing）兼容选项与内置诊断日志（默认关闭） |
+
+完整的更新日志见 [CHANGELOG.md](CHANGELOG.md)。
+
 ## 🙏 致谢
 
 - 感谢 [Krash220](https://github.com/Krash220) 创造了原模组。

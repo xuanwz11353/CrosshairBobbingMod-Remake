@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import krash220.xbob.game.api.Debug;
 import krash220.xbob.mixin.LivingEntityAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,6 +24,9 @@ public class PlayerBus {
             if (!entity.isInvulnerableTo(source) && !entity.isDeadOrDying()) {
                 if (source.getEntity() == Minecraft.getInstance().player) {
                     damage = (source.getDirectEntity() == source.getEntity() ? damage : 1.0f) * (((LivingEntityAccessor) entity).callIsDamageSourceBlocked(source) ?  0 : 1);
+
+                    Debug.count("xbob.attack.detected");
+                    Debug.track("lastAttackDamage", damage);
 
                     for (Consumer<Float> handler : attack) {
                         handler.accept(damage);

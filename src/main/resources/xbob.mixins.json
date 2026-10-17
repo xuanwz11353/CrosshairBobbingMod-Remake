@@ -8,6 +8,7 @@
         "CustomFramebufferRendererMixin",
         "DynamicCrosshairRendererMixin",
         "GameRendererAccessor",
+        "GuiGraphicsMixin",
         "GuiMixin",
         "ItemInHandRendererAccessor",
         "LivingEntityAccessor",

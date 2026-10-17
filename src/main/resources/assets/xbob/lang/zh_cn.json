@@ -8,6 +8,8 @@
     "xbob.config.xbow": "弩动画",
     "xbob.config.eat": "吃东西动画",
     "xbob.config.atk": "攻击动画",
+    "xbob.config.shouldersurfingCrosshair": "越肩视角准星同步摇晃",
+    "xbob.config.dynamicCrosshairLayerPose": "动态准星：整层变换（推荐）",
     "xbob.config.value.enable": "启用",
     "xbob.config.value.disable": "禁用"
 }

@@ -6,12 +6,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import krash220.xbob.game.api.Config;
+import krash220.xbob.game.api.Debug;
 import krash220.xbob.game.api.DynamicCrosshairCompat;
 import krash220.xbob.game.api.Loader;
 import krash220.xbob.game.api.Logger;
 import krash220.xbob.game.api.Player;
 import krash220.xbob.game.api.Player.ItemType;
 import krash220.xbob.game.api.Render;
+import krash220.xbob.game.api.ShoulderSurfingCompat;
 import krash220.xbob.game.api.bus.GuiBus;
 import krash220.xbob.game.api.bus.PlayerBus;
 import krash220.xbob.game.api.math.MatrixStack;
@@ -68,14 +70,21 @@ public class MainMod {
         Config.define(CONFIG_XBOW, true);
         Config.define(CONFIG_EAT, true);
         Config.define(CONFIG_ATK, true);
+        Config.define(ShoulderSurfingCompat.CONFIG_KEY, false);
+        Config.define(DynamicCrosshairCompat.LAYER_POSE_CONFIG, true);
         Config.load();
         Config.registerGui();
+
+        Debug.reportEnvironment();
     }
 
     public void preRenderCrossHair(MatrixStack mat, float partialTicks) {
         mat.push();
 
         bobActive = false;
+
+        Debug.count("xbob.preRenderCrosshair");
+        Debug.track("bobActive", false);
 
         if (!Render.isDebugCrosshair()) {
             this.matrix.identity();
@@ -171,6 +180,13 @@ public class MainMod {
             offsetX *= Render.getScaledWidth() * 0.5;
             offsetY *= Render.getScaledHeight() * 0.5;
 
+            if (Debug.BOB_SCALE != 1.0f) {
+                offsetX *= Debug.BOB_SCALE;
+                offsetY *= Debug.BOB_SCALE;
+
+                Debug.count("xbob.bob.amplified");
+            }
+
             bobOffsetX = offsetX;
             bobOffsetY = offsetY;
             bobAngle = angle;
@@ -178,9 +194,25 @@ public class MainMod {
             bobScaleBow = scaleBow;
             bobActive = true;
 
+            Debug.count("xbob.bob.computed");
+            Debug.track("bobActive", true);
+            Debug.track("bob.offset", String.format("(%.3f, %.3f)", offsetX, -offsetY));
+            Debug.track("bob.angle", String.format("%.2f", angle));
+            Debug.track("bob.scale", String.format("%.3f", scale));
+            Debug.throttled("xbob.bob.computed", "bob computed: offsetX={} offsetY={} angle={} scale={} scaleBow={}", offsetX, -offsetY, angle, scale, scaleBow);
+
             if (DynamicCrosshairCompat.shouldHandleCrosshair()) {
+                Debug.count("xbob.pose.skipped");
+                Debug.throttled("xbob.pose.skipped", "shouldHandleCrosshair()=true -> xbob leaves the GUI layer pose untouched; the transform has to come from the DynamicCrosshair hooks (wrapRender / CustomFramebufferRenderer.draw / GuiMixin)");
+
+                // the CROSSHAIR layer itself is not translated, but the pose is still pushed/poped by this method
+                Debug.pushTransform(false);
+
                 return;
             }
+
+            Debug.count("xbob.pose.transformed");
+            Debug.verbose("applying the bob transform directly to the crosshair layer pose: off=({}, {}) angle={} scale={} scaleBow={}", offsetX, -offsetY, angle, scale, scaleBow);
 
             mat.translate(Render.getScaledWidth() * 0.5, Render.getScaledHeight() * 0.5, 0.0);
             mat.translate(offsetX, -offsetY, 0.0);
@@ -188,11 +220,20 @@ public class MainMod {
             mat.scale(scale, scale, scale);
             mat.scale(1.0f, scaleBow, 1.0f);
             mat.translate(-Render.getScaledWidth() * 0.5, -Render.getScaledHeight() * 0.5, 0.0);
+
+            Debug.pushTransform(true);
+        } else {
+            Debug.count("xbob.bob.debugCrosshair");
+            Debug.throttled("xbob.bob.debugCrosshair", "crosshair bobbing skipped because the debug overlay is open or the GUI is hidden (Render.isDebugCrosshair()=true)");
+
+            Debug.pushTransform(false);
         }
     }
 
     public static void preDynamicCrosshair(PoseStack pose) {
         pose.pushPose();
+
+        Debug.count("xbob.transform.push");
 
         if (bobActive) {
             float cx = Render.getScaledWidth() * 0.5f;
@@ -204,20 +245,45 @@ public class MainMod {
             pose.scale(bobScale, bobScale, bobScale);
             pose.scale(1.0f, bobScaleBow, 1.0f);
             pose.translate(-cx, -cy, 0.0);
+
+            Debug.count("xbob.transform.applied");
+            Debug.track("lastTransform", String.format("off=(%.3f, %.3f) angle=%.2f scale=%.3f bow=%.3f", bobOffsetX, -bobOffsetY, bobAngle, bobScale, bobScaleBow));
+            Debug.pushTransform(true);
+
+            if (Debug.VERBOSE) {
+                var matrix = pose.last().pose();
+
+                Debug.verbose("bob transform applied to pose: translation=({}, {}) angle={} scale={}", matrix.m30(), matrix.m31(), bobAngle, bobScale);
+            }
+        } else {
+            Debug.count("xbob.transform.notActive");
+            Debug.throttled("xbob.transform.notActive", "preDynamicCrosshair() was called while bobActive=false -> this draw call is NOT bobbing (debug crosshair/hideGui, or preRenderCrosshair did not run for this frame)");
+
+            Debug.pushTransform(false);
         }
     }
 
     public static void postDynamicCrosshair(PoseStack pose) {
         pose.popPose();
+
+        Debug.popTransform();
+        Debug.count("xbob.transform.pop");
     }
 
     public void postRenderCrossHair(MatrixStack mat, float partialTicks) {
         mat.pop();
+
+        Debug.popTransform();
+        Debug.count("xbob.postRenderCrosshair");
+        Debug.tick();
     }
 
     public void onAttack(float damage) {
         long now = System.currentTimeMillis();
         boolean crit = damage > 1.0f;
+
+        Debug.count("xbob.attack");
+        Debug.verbose("attack event: damage={} crit={}", damage, crit);
 
         if (crit || this.isCrit && now > this.attackAnim + CRIT_ANIM_LEN || !this.isCrit) {
             this.attackDamage = Math.min(1.0f, damage);
