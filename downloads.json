@@ -441,35 +441,41 @@
     "2026-10-18": {
       "curseforge": 13,
       "github": 0,
-      "modrinth": 8,
+      "modrinth": 146,
+      "views": 4
+    },
+    "2026-10-19": {
+      "curseforge": 5,
+      "github": 1,
+      "modrinth": 4,
       "views": 1
     }
   },
   "totals": {
-    "modrinth": 2410,
-    "curseforge": 181,
-    "github": 8,
-    "views": 353
+    "modrinth": 2552,
+    "curseforge": 186,
+    "github": 9,
+    "views": 357
   },
   "snapshots": {
     "curseforge": {
-      "date": "2026-10-18",
-      "total": 181
+      "date": "2026-10-19",
+      "total": 186
     },
     "github": {
-      "date": "2026-10-18",
-      "total": 8
+      "date": "2026-10-19",
+      "total": 9
     }
   },
-  "updated": "2026-10-17T18:19:26.754Z",
+  "updated": "2026-10-18T18:32:20.326Z",
   "sources": {
     "curseforge": "cfwidget"
   },
   "breakdown": {
     "loaders": {
       "fabric": 23,
-      "neoforge": 1913,
-      "unknown": 486
+      "neoforge": 2032,
+      "unknown": 510
     },
     "versions": [
       {
@@ -478,7 +484,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 2279
+        "downloads": 2401
       },
       {
         "name": "Fabric-1.9fix",
@@ -486,7 +492,7 @@
         "loaders": [
           "fabric"
         ],
-        "downloads": 48
+        "downloads": 52
       },
       {
         "name": "Neoforge-1.9.1",
@@ -494,7 +500,15 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 30
+        "downloads": 42
+      },
+      {
+        "name": "neoforge-1.9",
+        "platform": "modrinth",
+        "loaders": [
+          "neoforge"
+        ],
+        "downloads": 31
       },
       {
         "name": "fabric-1.9",
@@ -503,14 +517,6 @@
           "fabric"
         ],
         "downloads": 30
-      },
-      {
-        "name": "neoforge-1.9",
-        "platform": "modrinth",
-        "loaders": [
-          "neoforge"
-        ],
-        "downloads": 27
       },
       {
         "name": "1.9fix-fabric",
@@ -525,7 +531,7 @@
       {
         "name": "1.9.1-neoforge",
         "platform": "github",
-        "downloads": 0
+        "downloads": 1
       }
     ]
   }
