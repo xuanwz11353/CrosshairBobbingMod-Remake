@@ -447,35 +447,41 @@
     "2026-10-19": {
       "curseforge": 5,
       "github": 1,
-      "modrinth": 4,
-      "views": 1
+      "modrinth": 50,
+      "views": 3
+    },
+    "2026-10-20": {
+      "curseforge": 4,
+      "github": 1,
+      "modrinth": 2,
+      "views": 0
     }
   },
   "totals": {
-    "modrinth": 2552,
-    "curseforge": 186,
-    "github": 9,
-    "views": 357
+    "modrinth": 2600,
+    "curseforge": 190,
+    "github": 10,
+    "views": 359
   },
   "snapshots": {
     "curseforge": {
-      "date": "2026-10-19",
-      "total": 186
+      "date": "2026-10-20",
+      "total": 190
     },
     "github": {
-      "date": "2026-10-19",
-      "total": 9
+      "date": "2026-10-20",
+      "total": 10
     }
   },
-  "updated": "2026-10-18T18:32:20.326Z",
+  "updated": "2026-10-19T20:56:21.898Z",
   "sources": {
     "curseforge": "cfwidget"
   },
   "breakdown": {
     "loaders": {
       "fabric": 23,
-      "neoforge": 2032,
-      "unknown": 510
+      "neoforge": 2077,
+      "unknown": 514
     },
     "versions": [
       {
@@ -484,7 +490,15 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 2401
+        "downloads": 2439
+      },
+      {
+        "name": "Neoforge-1.9.1",
+        "platform": "modrinth",
+        "loaders": [
+          "neoforge"
+        ],
+        "downloads": 52
       },
       {
         "name": "Fabric-1.9fix",
@@ -493,14 +507,6 @@
           "fabric"
         ],
         "downloads": 52
-      },
-      {
-        "name": "Neoforge-1.9.1",
-        "platform": "modrinth",
-        "loaders": [
-          "neoforge"
-        ],
-        "downloads": 42
       },
       {
         "name": "neoforge-1.9",
@@ -524,14 +530,14 @@
         "downloads": 6
       },
       {
-        "name": "1.9fix-neoforge",
+        "name": "1.9.1-neoforge",
         "platform": "github",
         "downloads": 2
       },
       {
-        "name": "1.9.1-neoforge",
+        "name": "1.9fix-neoforge",
         "platform": "github",
-        "downloads": 1
+        "downloads": 2
       }
     ]
   }
