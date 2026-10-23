@@ -471,35 +471,41 @@
     "2026-10-23": {
       "curseforge": 2,
       "github": 0,
-      "modrinth": 2,
-      "views": 0
+      "modrinth": 32,
+      "views": 3
+    },
+    "2026-10-24": {
+      "curseforge": 8,
+      "github": 1,
+      "modrinth": 18,
+      "views": 7
     }
   },
   "totals": {
-    "modrinth": 2742,
-    "curseforge": 199,
-    "github": 11,
-    "views": 380
+    "modrinth": 2790,
+    "curseforge": 207,
+    "github": 12,
+    "views": 390
   },
   "snapshots": {
     "curseforge": {
-      "date": "2026-10-23",
-      "total": 199
+      "date": "2026-10-24",
+      "total": 207
     },
     "github": {
-      "date": "2026-10-23",
-      "total": 11
+      "date": "2026-10-24",
+      "total": 12
     }
   },
-  "updated": "2026-10-22T19:52:02.507Z",
+  "updated": "2026-10-23T19:52:20.438Z",
   "sources": {
     "curseforge": "cfwidget"
   },
   "breakdown": {
     "loaders": {
-      "fabric": 31,
-      "neoforge": 2176,
-      "unknown": 550
+      "fabric": 32,
+      "neoforge": 2200,
+      "unknown": 574
     },
     "versions": [
       {
@@ -508,7 +514,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 2549
+        "downloads": 2573
       },
       {
         "name": "Neoforge-1.9.1",
@@ -516,7 +522,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 68
+        "downloads": 74
       },
       {
         "name": "Fabric-1.9fix",
@@ -524,7 +530,7 @@
         "loaders": [
           "fabric"
         ],
-        "downloads": 64
+        "downloads": 66
       },
       {
         "name": "neoforge-1.9",
@@ -543,6 +549,14 @@
         "downloads": 32
       },
       {
+        "name": "2.0.0+26.1.2",
+        "platform": "modrinth",
+        "loaders": [
+          "fabric"
+        ],
+        "downloads": 16
+      },
+      {
         "name": "1.9fix-fabric",
         "platform": "github",
         "downloads": 6
@@ -556,6 +570,11 @@
         "name": "1.9fix-neoforge",
         "platform": "github",
         "downloads": 2
+      },
+      {
+        "name": "2.0.0-fabric",
+        "platform": "github",
+        "downloads": 1
       }
     ]
   }
