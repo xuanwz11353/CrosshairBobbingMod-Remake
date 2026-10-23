@@ -2,7 +2,12 @@ package krash220.xbob;
 
 import java.util.function.Function;
 
+import org.joml.Matrix3x2fStack;
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
+
 import krash220.xbob.game.api.Config;
+import krash220.xbob.game.api.DynamicCrosshairCompat;
 import krash220.xbob.game.api.Loader;
 import krash220.xbob.game.api.Logger;
 import krash220.xbob.game.api.Player;
@@ -10,7 +15,7 @@ import krash220.xbob.game.api.Player.ItemType;
 import krash220.xbob.game.api.Render;
 import krash220.xbob.game.api.bus.GuiBus;
 import krash220.xbob.game.api.bus.PlayerBus;
-import krash220.xbob.game.api.math.MatrixStack;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class MainMod {
 
@@ -32,7 +37,9 @@ public class MainMod {
     private static final String CONFIG_EAT = "eat";
     private static final String CONFIG_ATK = "atk";
 
-    private MatrixStack matrix;
+    private final Matrix4f matrix = new Matrix4f();
+    private final Vector4f projected = new Vector4f();
+    private final Vector4f rotated = new Vector4f();
 
     private boolean isCrit;
     private int critDir = 1;
@@ -41,11 +48,17 @@ public class MainMod {
     private float attackAnimScale;
     private float attackDamage;
 
+    // Diagnostic instrumentation (read by the client game test; harmless at runtime).
+    public static volatile boolean debugApplied;
+    public static volatile float debugOffsetX;
+    public static volatile float debugOffsetY;
+    public static volatile float debugAngle;
+    public static volatile float debugScale = 1.0f;
+
     public MainMod() {
         Logger.info("Hello, Crosshair Bobbing!");
         Logger.info("Platform: {}, Minecraft: {}, isClient: {}", Loader.getPlatform(), Loader.getVersion(), Loader.isClient());
 
-        this.matrix = new MatrixStack();
         GuiBus.registerRenderCrosshair(this::preRenderCrossHair, this::postRenderCrossHair);
         PlayerBus.registerAttack(this::onAttack);
 
@@ -59,21 +72,22 @@ public class MainMod {
         Config.define(CONFIG_ATK, true);
         Config.load();
         Config.registerGui();
+
+        Logger.info("DynamicCrosshair detected: {}", DynamicCrosshairCompat.isPresent());
     }
 
-    public void preRenderCrossHair(MatrixStack mat, float partialTicks) {
-        mat.push();
+    public void preRenderCrossHair(GuiGraphicsExtractor graphics, float partialTicks) {
+        Matrix3x2fStack pose = graphics.pose();
+
+        pose.pushMatrix();
+        DynamicCrosshairCompat.setTransforming(true);
+        debugApplied = false;
 
         if (!Render.isDebugCrosshair()) {
             this.matrix.identity();
 
-            Render.updateCameraMatrix(this.matrix, partialTicks);
-
-            if (Config.check(CONFIG_BOB)) {
-                Render.bobView(this.matrix, partialTicks);
-                Render.distortion(this.matrix, partialTicks);
-                Render.modCamera(this.matrix);
-            }
+            // bobbing, damage tilt, portal/nausea distortion and CameraOverhaul
+            Render.buildCameraMatrix(this.matrix, partialTicks, Config.check(CONFIG_BOB));
 
             float item = 1.0f - Player.changeItemProgress(partialTicks);
             float swing = Player.swingProgress(partialTicks);
@@ -85,17 +99,17 @@ public class MainMod {
             }
 
             if (Config.check(CONFIG_ITEM)) {
-                this.matrix.translate(item * 0.08, item * -0.3, 0.0);
+                this.matrix.translate(item * 0.08f, item * -0.3f, 0.0f);
             }
 
             float dist = Render.getCenterDepth();
-            float[] pos = this.matrix.multiplyVector(0f, 0f, -dist, 1f);
-            float[] rot = this.matrix.multiplyVector(0f, 1f, -dist, 1f);
+            this.matrix.transform(this.projected.set(0f, 0f, -dist, 1f));
+            this.matrix.transform(this.rotated.set(0f, 1f, -dist, 1f));
 
-            float offsetX = pos[0] / pos[3];
-            float offsetY = pos[1] / pos[3];
-            float rotOffX = rot[0] / rot[3] - pos[0] / pos[3];
-            float rotOffY = rot[1] / rot[3] - pos[1] / pos[3];
+            float offsetX = this.projected.x / this.projected.w;
+            float offsetY = this.projected.y / this.projected.w;
+            float rotOffX = this.rotated.x / this.rotated.w - this.projected.x / this.projected.w;
+            float rotOffY = this.rotated.y / this.rotated.w - this.projected.y / this.projected.w;
 
             float angle = (float) Math.toDegrees(Math.atan2(rotOffX, rotOffY));
             float scale = 1.0f + interpolation(Math::sin, swing, 0.5 * Math.PI, Math.PI, false) * 0.2f;
@@ -155,22 +169,30 @@ public class MainMod {
                 }
             }
 
-            offsetX *= Render.getScaledWidth() * 0.5;
-            offsetY *= Render.getScaledHeight() * 0.5;
+            offsetX *= Render.getScaledWidth() * 0.5f;
+            offsetY *= Render.getScaledHeight() * 0.5f;
 
-            Logger.info("BOBBING offsetX={} offsetY={} angle={} scale={} scaleBow={} partialTicks={}", offsetX, offsetY, angle, scale, scaleBow, partialTicks);
+            float centerX = Render.getScaledWidth() * 0.5f;
+            float centerY = Render.getScaledHeight() * 0.5f;
 
-            mat.translate(Render.getScaledWidth() * 0.5, Render.getScaledHeight() * 0.5, 0.0);
-            mat.translate(offsetX, -offsetY, 0.0);
-            mat.rotate(angle, 0.0f, 0.0f, 1.0f);
-            mat.scale(scale, scale, scale);
-            mat.scale(1.0f, scaleBow, 1.0f);
-            mat.translate(-Render.getScaledWidth() * 0.5, -Render.getScaledHeight() * 0.5, 0.0);
+            pose.translate(centerX, centerY);
+            pose.translate(offsetX, -offsetY);
+            pose.rotate((float) Math.toRadians(angle));
+            pose.scale(scale, scale * scaleBow);
+            pose.translate(-centerX, -centerY);
+
+            debugOffsetX = offsetX;
+            debugOffsetY = offsetY;
+            debugAngle = angle;
+            debugScale = scale;
+            debugApplied = true;
         }
     }
 
-    public void postRenderCrossHair(MatrixStack mat, float partialTicks) {
-        mat.pop();
+    public void postRenderCrossHair(GuiGraphicsExtractor graphics, float partialTicks) {
+        DynamicCrosshairCompat.setTransforming(false);
+
+        graphics.pose().popMatrix();
     }
 
     public void onAttack(float damage) {

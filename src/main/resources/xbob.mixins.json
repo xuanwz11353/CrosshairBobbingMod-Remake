@@ -1,18 +1,18 @@
 {
     "required": true,
     "package": "${mod_package}.mixin",
-    "compatibilityLevel": "JAVA_21",
-    "refmap": "xbob-refmap.json",
+    "compatibilityLevel": "JAVA_25",
     "client": [
-        "InGameHudMixin",
-        "ClientPlayerInteractionManagerMixin",
-        "LivingEntityMixin",
-        "LivingEntityAccessor",
-        "HeldItemRendererAccessor",
-        "GameRendererMixin",
+        "GuiMixin",
+        "MultiPlayerGameModeMixin",
+        "EntityHurtMixin",
         "GameRendererAccessor",
         "CameraAccessor",
-        "CustomFramebufferRendererMixin",
-        "DynamicCrosshairWrapRenderMixin"
-    ]
+        "ItemInHandRendererAccessor",
+        "LivingEntityAccessor",
+        "DynamicCrosshairCompatMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
 }

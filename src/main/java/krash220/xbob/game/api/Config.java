@@ -15,13 +15,13 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 
 public class Config {
 
@@ -44,7 +44,9 @@ public class Config {
         try (FileInputStream fis = new FileInputStream(config)) {
             Map map = GSON.fromJson(new InputStreamReader(fis, StandardCharsets.UTF_8), Map.class);
 
-            CONFIG.putAll(map);
+            if (map != null) {
+                CONFIG.putAll(map);
+            }
         } catch (IOException e) {}
     }
 
@@ -87,28 +89,28 @@ public class Config {
 
     private static class ConfigScreen extends Screen {
 
-        private static final Text VALUE_ENABLE = Text.translatable("xbob.config.value.enable").formatted(Formatting.GREEN);
-        private static final Text VALUE_DISABLE = Text.translatable("xbob.config.value.disable").formatted(Formatting.DARK_RED);
+        private static final Component VALUE_ENABLE = Component.translatable("xbob.config.value.enable").withStyle(ChatFormatting.GREEN);
+        private static final Component VALUE_DISABLE = Component.translatable("xbob.config.value.disable").withStyle(ChatFormatting.DARK_RED);
 
-        public static Text getValueText(String key) {
+        public static Component getValueText(String key) {
             boolean bool = CONFIG.get(key).booleanValue();
 
-            return Text.translatable("%s: %s", Text.translatable("xbob.config." + key), bool ? VALUE_ENABLE : VALUE_DISABLE);
+            return Component.translatable("%s: %s", Component.translatable("xbob.config." + key), bool ? VALUE_ENABLE : VALUE_DISABLE);
         }
 
-        private Screen previous;
+        private final Screen previous;
 
-        public ConfigScreen(Screen previous) {
-            super(Text.translatable("xbob.config.title"));
+        private ConfigScreen(Screen previous) {
+            super(Component.translatable("xbob.config.title"));
 
             this.previous = previous;
         }
 
         @Override
-        public void close() {
+        public void onClose() {
             save();
 
-            MinecraftClient.getInstance().setScreen(this.previous);
+            Minecraft.getInstance().setScreen(this.previous);
         }
 
         @Override
@@ -116,23 +118,26 @@ public class Config {
             int i = this.height / 6 - 12;
 
             for (String key : DEFAULT.keySet()) {
-                this.addDrawableChild(ButtonWidget.builder(getValueText(key), btn -> {
+                this.addRenderableWidget(Button.builder(getValueText(key), btn -> {
                     set(key, !check(key));
 
                     btn.setMessage(getValueText(key));
-                }).dimensions(this.width / 2 - 150, i, 300, 20).build());
+                }).bounds(this.width / 2 - 150, i, 300, 20).build());
 
                 i += 24;
             }
 
-            this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, btn -> this.close()).dimensions(this.width / 2 - 100, this.height - 27, 200, 20).build());
+            this.addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, btn -> this.onClose()).bounds(this.width / 2 - 100, this.height - 27, 200, 20).build());
         }
 
         @Override
-        public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-            this.renderBackground(context, mouseX, mouseY, delta);
-            context.drawCenteredTextWithShadow(textRenderer, this.title, this.width / 2, 15, 0xFFFFFF);
-            super.render(context, mouseX, mouseY, delta);
+        public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+            // 26.1: the background (blur/panorama) is already rendered by
+            // Screen.extractRenderStateWithTooltipAndSubtitles before this method, so drawing it here too
+            // throws "Can only blur once per frame".
+            super.extractRenderState(graphics, mouseX, mouseY, partialTick);
+            // 26.1 font colours are ARGB, so the alpha channel must be set explicitly.
+            graphics.centeredText(this.font, this.title, this.width / 2, 15, 0xFFFFFFFF);
         }
     }
 }

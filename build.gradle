@@ -1,6 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
-    id 'maven-publish'
+    id 'fabric-loom' version '1.19.3'
 }
 
 version = project.mod_version
@@ -23,12 +22,18 @@ repositories {
     maven { url = 'https://api.modrinth.com/maven' }
 }
 
+// Loom 1.19.3 in `fabric.loom.disableObfuscation` mode produces an EMPTY merged
+// minecraft-merged.jar (the merge step needs mappings), so the named Minecraft classes
+// never reach the compile classpath. Add the downloaded, already-named client jar directly.
+def minecraftClientJar = file("${gradle.gradleUserHomeDir}/caches/fabric-loom/${project.minecraft_version}/minecraft-client.jar")
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+    implementation files(minecraftClientJar)
+    // 26.1+ ships unobfuscated: no remap configurations exist, plain dependencies are used.
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {
@@ -44,34 +49,6 @@ processResources {
         "mod_entrypoint", project.mod_entrypoint
     ))
 
-    filesMatching("fabric.mod.json") {
-        expand(Map.of(
-            "mod_id", project.mod_id,
-            "mod_name", project.mod_name,
-            "mod_version", project.mod_version,
-            "mod_author", project.mod_author,
-            "mod_description", project.mod_description,
-            "mod_url", project.mod_url,
-            "mod_license", project.mod_license,
-            "mod_package", project.mod_package,
-            "mod_entrypoint", project.mod_entrypoint
-        ))
-    }
-
-    filesMatching("fabric.mod.json") {
-        filter { line ->
-            line.replace("\${mod_id}", project.mod_id)
-                .replace("\${mod_name}", project.mod_name)
-                .replace("\${mod_version}", project.mod_version)
-                .replace("\${mod_author}", project.mod_author)
-                .replace("\${mod_description}", project.mod_description)
-                .replace("\${mod_url}", project.mod_url)
-                .replace("\${mod_license}", project.mod_license)
-                .replace("\${mod_package}", project.mod_package)
-                .replace("\${mod_entrypoint}", project.mod_entrypoint)
-        }
-    }
-
     filesMatching("**/*.json") {
         filter { line ->
             line.replace("\${mod_id}", project.mod_id)
@@ -85,35 +62,22 @@ processResources {
                 .replace("\${mod_entrypoint}", project.mod_entrypoint)
         }
     }
-
-
 }
 
 java {
     withSourcesJar()
-
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = 25
+    it.options.encoding = 'UTF-8'
 }
 
 jar {
     from("LICENSE") {
         rename { "${it}_${project.base.archivesName.get()}" }
-    }
-}
-
-publishing {
-    publications {
-        create("mavenJava", MavenPublication) {
-            artifactId = project.archives_base_name
-            from components.java
-        }
-    }
-
-    repositories {
     }
 }

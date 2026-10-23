@@ -4,22 +4,23 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 
 @Mixin(GameRenderer.class)
 public interface GameRendererAccessor {
 
-    @Accessor("ticks")
-    int getTicks();
-
-    @Invoker("tiltViewWhenHurt")
-    void tiltViewWhenHurt(MatrixStack mat, float partialTicks);
+    @Invoker("bobHurt")
+    void xbob$bobHurt(CameraRenderState state, PoseStack pose);
 
     @Invoker("bobView")
-    void bobView(MatrixStack mat, float partialTicks);
+    void xbob$bobView(CameraRenderState state, PoseStack pose);
 
-    @Invoker("getFov")
-    double getFov(Camera camera, float tickDelta, boolean changingFov);
+    @Accessor("spinningEffectTime")
+    float xbob$getSpinningEffectTime();
+
+    @Accessor("spinningEffectSpeed")
+    float xbob$getSpinningEffectSpeed();
 }

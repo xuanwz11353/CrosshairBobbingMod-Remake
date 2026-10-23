@@ -4,27 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import krash220.xbob.mixin.LivingEntityAccessor;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 
 public class PlayerBus {
 
-    private static List<Consumer<Float>> attack = new ArrayList<>();
+    private static final List<Consumer<Float>> ATTACK = new ArrayList<>();
 
     public static void registerAttack(Consumer<Float> attack) {
-        PlayerBus.attack.add(attack);
+        ATTACK.add(attack);
     }
 
-    @SuppressWarnings("resource")
     public static void onAttack(LivingEntity entity, DamageSource source, float damage) {
-        if (entity.getWorld().isClient) {
-            if (!entity.isInvulnerableTo(source) && !entity.isDead()) {
-                if (source.getAttacker() == MinecraftClient.getInstance().player) {
-                    damage = (source.getSource() == source.getAttacker() ? damage : 1.0f) * (((LivingEntityAccessor) entity).blockedByShield(source) ?  0 : 1);
+        if (entity.level() != null && entity.level().isClientSide()) {
+            if (!entity.isDeadOrDying()) {
+                if (source.getEntity() == Minecraft.getInstance().player) {
+                    damage = (source.getDirectEntity() == source.getEntity() ? damage : 1.0f) * (entity.isBlocking() ? 0.0f : 1.0f);
 
-                    for (Consumer<Float> handler : attack) {
+                    for (Consumer<Float> handler : ATTACK) {
                         handler.accept(damage);
                     }
                 }
@@ -33,7 +31,7 @@ public class PlayerBus {
     }
 
     public static void onBreakBlock() {
-        for (Consumer<Float> handler : attack) {
+        for (Consumer<Float> handler : ATTACK) {
             handler.accept(0.6f);
         }
     }
