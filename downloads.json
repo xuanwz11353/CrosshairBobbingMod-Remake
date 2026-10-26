@@ -489,35 +489,41 @@
     "2026-10-26": {
       "curseforge": 1,
       "github": 0,
-      "modrinth": 4,
-      "views": 1
+      "modrinth": 40,
+      "views": 6
+    },
+    "2026-10-27": {
+      "curseforge": 5,
+      "github": 0,
+      "modrinth": 16,
+      "views": 2
     }
   },
   "totals": {
-    "modrinth": 2922,
-    "curseforge": 216,
+    "modrinth": 2972,
+    "curseforge": 221,
     "github": 12,
-    "views": 404
+    "views": 411
   },
   "snapshots": {
     "curseforge": {
-      "date": "2026-10-26",
-      "total": 216
+      "date": "2026-10-27",
+      "total": 221
     },
     "github": {
-      "date": "2026-10-26",
+      "date": "2026-10-27",
       "total": 12
     }
   },
-  "updated": "2026-10-25T18:49:11.011Z",
+  "updated": "2026-10-26T20:57:14.727Z",
   "sources": {
     "curseforge": "cfwidget"
   },
   "breakdown": {
     "loaders": {
       "fabric": 34,
-      "neoforge": 2282,
-      "unknown": 622
+      "neoforge": 2324,
+      "unknown": 632
     },
     "versions": [
       {
@@ -526,7 +532,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 2663
+        "downloads": 2715
       },
       {
         "name": "Neoforge-1.9.1",
