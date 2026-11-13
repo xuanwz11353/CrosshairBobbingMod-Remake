@@ -597,85 +597,43 @@
     "2026-11-13": {
       "curseforge": 1,
       "github": 0,
-      "modrinth": 2,
-      "views": 2
+      "modrinth": 35,
+      "views": 5
+    },
+    "2026-11-14": {
+      "curseforge": 2,
+      "github": 0,
+      "modrinth": 0,
+      "views": 22
     }
   },
   "totals": {
-    "modrinth": 1858,
-    "curseforge": 298,
+    "modrinth": 1891,
+    "curseforge": 300,
     "github": 16,
-    "views": 464
+    "views": 489
   },
   "snapshots": {
     "curseforge": {
-      "date": "2026-11-13",
-      "total": 298
+      "date": "2026-11-14",
+      "total": 300
     },
     "github": {
-      "date": "2026-11-13",
+      "date": "2026-11-14",
       "total": 16
     }
   },
-  "updated": "2026-11-12T22:09:29.804Z",
+  "updated": "2026-11-13T21:51:32.274Z",
   "sources": {
     "curseforge": "cfwidget"
   },
   "breakdown": {
     "loaders": {
       "fabric": 33,
-      "neoforge": 1413,
-      "unknown": 432
+      "neoforge": 1437,
+      "unknown": 442
     },
     "versions": [
-      {
-        "name": "Neoforge-1.9fix",
-        "platform": "modrinth",
-        "loaders": [
-          "neoforge"
-        ],
-        "downloads": 1629
-      },
-      {
-        "name": "Neoforge-1.9.1",
-        "platform": "modrinth",
-        "loaders": [
-          "neoforge"
-        ],
-        "downloads": 106
-      },
-      {
-        "name": "Fabric-1.9fix",
-        "platform": "modrinth",
-        "loaders": [
-          "fabric"
-        ],
-        "downloads": 49
-      },
-      {
-        "name": "neoforge-1.9",
-        "platform": "modrinth",
-        "loaders": [
-          "neoforge"
-        ],
-        "downloads": 29
-      },
-      {
-        "name": "fabric-1.9",
-        "platform": "modrinth",
-        "loaders": [
-          "fabric"
-        ],
-        "downloads": 27
-      },
-      {
-        "name": "2.0.0+26.1.2",
-        "platform": "modrinth",
-        "loaders": [
-          "fabric"
-        ],
-        "downloads": 22
-      },
       {
         "name": "1.9fix-fabric",
         "platform": "github",
@@ -695,6 +653,54 @@
         "name": "2.0.0-fabric",
         "platform": "github",
         "downloads": 2
+      },
+      {
+        "name": "2.0.0+26.1.2",
+        "platform": "modrinth",
+        "loaders": [
+          "fabric"
+        ],
+        "downloads": 0
+      },
+      {
+        "name": "Neoforge-1.9.1",
+        "platform": "modrinth",
+        "loaders": [
+          "neoforge"
+        ],
+        "downloads": 0
+      },
+      {
+        "name": "Fabric-1.9fix",
+        "platform": "modrinth",
+        "loaders": [
+          "fabric"
+        ],
+        "downloads": 0
+      },
+      {
+        "name": "Neoforge-1.9fix",
+        "platform": "modrinth",
+        "loaders": [
+          "neoforge"
+        ],
+        "downloads": 0
+      },
+      {
+        "name": "fabric-1.9",
+        "platform": "modrinth",
+        "loaders": [
+          "fabric"
+        ],
+        "downloads": 0
+      },
+      {
+        "name": "neoforge-1.9",
+        "platform": "modrinth",
+        "loaders": [
+          "neoforge"
+        ],
+        "downloads": 0
       }
     ]
   }
