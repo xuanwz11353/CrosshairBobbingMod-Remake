@@ -609,35 +609,41 @@
     "2026-11-15": {
       "curseforge": 3,
       "github": 0,
-      "modrinth": 2,
-      "views": 0
+      "modrinth": 10,
+      "views": 3
+    },
+    "2026-11-16": {
+      "curseforge": 6,
+      "github": 1,
+      "modrinth": 1,
+      "views": 7
     }
   },
   "totals": {
-    "modrinth": 1902,
-    "curseforge": 303,
-    "github": 16,
-    "views": 491
+    "modrinth": 1911,
+    "curseforge": 309,
+    "github": 17,
+    "views": 501
   },
   "snapshots": {
     "curseforge": {
-      "date": "2026-11-15",
-      "total": 303
+      "date": "2026-11-16",
+      "total": 309
     },
     "github": {
-      "date": "2026-11-15",
-      "total": 16
+      "date": "2026-11-16",
+      "total": 17
     }
   },
-  "updated": "2026-11-14T20:31:52.470Z",
+  "updated": "2026-11-15T20:55:17.105Z",
   "sources": {
     "curseforge": "cfwidget"
   },
   "breakdown": {
     "loaders": {
-      "fabric": 34,
-      "neoforge": 1445,
-      "unknown": 444
+      "fabric": 36,
+      "neoforge": 1450,
+      "unknown": 447
     },
     "versions": [
       {
@@ -646,7 +652,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 1669
+        "downloads": 1673
       },
       {
         "name": "Neoforge-1.9.1",
@@ -654,7 +660,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 109
+        "downloads": 112
       },
       {
         "name": "Fabric-1.9fix",
@@ -662,7 +668,7 @@
         "loaders": [
           "fabric"
         ],
-        "downloads": 49
+        "downloads": 50
       },
       {
         "name": "neoforge-1.9",
@@ -686,7 +692,7 @@
         "loaders": [
           "fabric"
         ],
-        "downloads": 23
+        "downloads": 24
       },
       {
         "name": "1.9fix-fabric",
@@ -699,14 +705,14 @@
         "downloads": 4
       },
       {
-        "name": "1.9fix-neoforge",
+        "name": "2.0.0-fabric",
         "platform": "github",
         "downloads": 3
       },
       {
-        "name": "2.0.0-fabric",
+        "name": "1.9fix-neoforge",
         "platform": "github",
-        "downloads": 2
+        "downloads": 3
       }
     ]
   }
