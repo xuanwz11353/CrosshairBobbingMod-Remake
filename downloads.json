@@ -669,35 +669,41 @@
     "2026-11-25": {
       "curseforge": 1,
       "github": 0,
-      "modrinth": 9,
+      "modrinth": 12,
+      "views": 6
+    },
+    "2026-11-26": {
+      "curseforge": 2,
+      "github": 0,
+      "modrinth": 3,
       "views": 2
     }
   },
   "totals": {
-    "modrinth": 1993,
-    "curseforge": 369,
+    "modrinth": 1999,
+    "curseforge": 371,
     "github": 17,
-    "views": 555
+    "views": 561
   },
   "snapshots": {
     "curseforge": {
-      "date": "2026-11-25",
-      "total": 369
+      "date": "2026-11-26",
+      "total": 371
     },
     "github": {
-      "date": "2026-11-25",
+      "date": "2026-11-26",
       "total": 17
     }
   },
-  "updated": "2026-11-25T00:29:43.793Z",
+  "updated": "2026-11-26T00:05:20.390Z",
   "sources": {
     "curseforge": "cfwidget"
   },
   "breakdown": {
     "loaders": {
       "fabric": 37,
-      "neoforge": 1500,
-      "unknown": 478
+      "neoforge": 1505,
+      "unknown": 479
     },
     "versions": [
       {
@@ -706,7 +712,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 1700
+        "downloads": 1705
       },
       {
         "name": "Neoforge-1.9.1",
@@ -714,7 +720,7 @@
         "loaders": [
           "neoforge"
         ],
-        "downloads": 155
+        "downloads": 156
       },
       {
         "name": "Fabric-1.9fix",
